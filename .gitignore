@@ -14,3 +14,9 @@
 compile_commands.json
 .clangd/
 .cache/
+
+# IntelliJ
+.idea
+
+# Compile files
+lily58_rev1_mrn.hex
