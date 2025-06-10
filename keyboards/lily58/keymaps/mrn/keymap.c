@@ -2,7 +2,7 @@
 
 enum layer_number {
   BASE_MAC = 0,
-  BASE_WIN = 1,
+  BASE_WIN,
   SFT_MAC,
   SFT_WIN,
   CTL_MAC,
@@ -13,6 +13,12 @@ enum layer_number {
   ALT_WIN,
   NAVI_MAC,
   NAVI_WIN,
+};
+
+enum custom_keycodes {
+    SFT_SPC_TAP = SAFE_RANGE,
+    L_PAR_BRC,
+    R_PAR_BRC,
 };
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
@@ -37,15 +43,15 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
    KC_TAB, KC_Q, KC_W,    KC_F,    KC_P,    KC_B,                                                  KC_J,    KC_L,    KC_U,   KC_Y, S(KC_0),    KC_NUBS,
   KC_BSPC, KC_A, KC_R,    KC_S,    KC_T,    KC_G,                                                  KC_M,    KC_N,    KC_E,   KC_I,    KC_O, A(KC_BSLS),
   S(KC_8), KC_Z, KC_X,    KC_C,    KC_D,    KC_V,    A(KC_EQL),         RALT(KC_RBRC),    KC_K,    KC_H, KC_COMM, KC_DOT, KC_SLSH,    S(KC_9),
-  LM(CTL_MAC, MOD_LCTL), LM(GUI_MAC, MOD_LGUI), LM(ALT_MAC, MOD_LALT), LT(0, KC_NO), LT(NAVI_MAC, KC_ENT), LM(ALT_MAC, MOD_LALT), LM(GUI_MAC, MOD_RGUI), LM(CTL_MAC, MOD_RCTL)
+  LM(CTL_MAC, MOD_LCTL), LM(GUI_MAC, MOD_LGUI), LM(ALT_MAC, MOD_LALT), SFT_SPC_TAP, LT(NAVI_MAC, KC_ENT), LM(ALT_MAC, MOD_LALT), LM(GUI_MAC, MOD_RGUI), LM(CTL_MAC, MOD_RCTL)
 ),
 
 [BASE_WIN] = LAYOUT(
    KC_ESC, KC_1, KC_2,    KC_3,    KC_4,    KC_5,                                                  KC_6,    KC_7,    KC_8,   KC_9,    KC_0,    A(KC_7),
    KC_TAB, KC_Q, KC_W,    KC_F,    KC_P,    KC_B,                                                  KC_J,    KC_L,    KC_U,   KC_Y, S(KC_0),    KC_NUBS,
   KC_BSPC, KC_A, KC_R,    KC_S,    KC_T,    KC_G,                                                  KC_M,    KC_N,    KC_E,   KC_I,    KC_O, A(KC_BSLS),
-  S(KC_8), KC_Z, KC_X,    KC_C,    KC_D,    KC_V,    A(KC_EQL),         RALT(KC_RBRC),    KC_K,    KC_H, KC_COMM, KC_DOT, KC_SLSH,    S(KC_9),
-  LM(GUI_WIN, MOD_LGUI), LM(CTL_WIN, MOD_LCTL), LM(ALT_WIN, MOD_LALT), LT(1, KC_NO), LT(NAVI_WIN, KC_ENT), LM(ALT_WIN, MOD_LALT), LM(CTL_WIN, MOD_RCTL), LM(GUI_WIN, MOD_RGUI)
+  L_PAR_BRC, KC_Z, KC_X,    KC_C,    KC_D,    KC_V,    A(KC_EQL),         RALT(KC_RBRC),    KC_K,    KC_H, KC_COMM, KC_DOT, KC_SLSH,    R_PAR_BRC,
+  LM(GUI_WIN, MOD_LGUI), LM(CTL_WIN, MOD_LCTL), LM(ALT_WIN, MOD_LALT), SFT_SPC_TAP, LT(NAVI_WIN, KC_ENT), LM(ALT_WIN, MOD_LALT), LM(CTL_WIN, MOD_RCTL), LM(GUI_WIN, MOD_RGUI)
 ),
 
 /* SFT
@@ -72,11 +78,11 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  ),
 
  [SFT_WIN] = LAYOUT(
-   _______, _______, _______, _______, _______, _______,                      KC_RBRC, KC_MINS, KC_BSLS,    KC_7, A(KC_7),    KC_6,
-   _______, _______, _______, _______, _______, _______,                      _______, _______, _______, _______, KC_MINS, _______,
-    KC_DEL, _______, _______, _______, _______, _______,                      _______, _______, _______, _______, _______,    KC_2,
-   A(KC_8), _______, _______, _______, _______, _______, C(KC_EQL),  KC_BSLS, _______, _______, _______, _______, _______, A(KC_9),
-                              _______, _______, _______, _______,    _______, _______, _______, _______
+  _______, _______, _______, _______, _______, _______,                      _______, _______, _______, _______, _______, _______,
+  _______, _______, _______, _______, _______, _______,                      _______, _______, _______, _______, _______, _______,
+  _______, _______, _______, _______, _______, _______,                      _______, _______, _______, _______, _______, _______,
+  _______, _______, _______, _______, _______, _______, _______,    _______, _______, _______, _______, _______, _______, _______,
+                             _______, _______, _______, _______,    _______, _______, _______, _______
  ),
 
 /* CTL
@@ -157,19 +163,19 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  */
 
 [ALT_MAC] = LAYOUT(
-  _______, _______, _______, _______, _______, _______,                      _______, _______, _______, _______, _______, _______,
-  _______, _______, _______, _______, _______, _______,                      _______, _______, _______, _______, _______, _______,
-  _______, KC_LBRC, _______, _______, _______, _______,                      _______, _______, KC_QUOT, _______, KC_SCLN, _______,
+     _______, _______, _______, _______, _______, _______,                      _______, _______, _______, _______, _______,    _______,
+     _______, _______, _______, _______, _______, _______,                      _______, _______, _______, _______, _______,    _______,
+     _______, KC_LBRC, _______, _______, _______, _______,                      _______, _______, KC_QUOT, _______, KC_SCLN,    _______,
   S(A(KC_8)), _______, _______, _______, _______, _______, _______,    _______, _______, _______, _______, _______, _______, S(A(KC_9)),
-                             _______, _______, _______, _______,    _______, _______, _______, _______
+                                _______, _______, _______, _______,    _______, _______, _______, _______
 ),
 
 [ALT_WIN] = LAYOUT(
-  _______, _______, _______, _______, _______, _______,                      _______, _______, _______, _______, _______, _______,
-  _______, _______, _______, _______, _______, _______,                      _______, _______, _______, _______, _______, _______,
-  _______, _______, _______, _______, _______, _______,                      _______, _______, _______, _______, _______, _______,
-  _______, _______, _______, _______, _______, _______, _______,    _______, _______, _______, _______, _______, _______, _______,
-                             _______, _______, _______, _______,    _______, _______, _______, _______
+     _______, _______, _______, _______, _______, _______,                      _______, _______, _______, _______, _______,    _______,
+     _______, _______, _______, _______, _______, _______,                      _______, _______, _______, _______, _______,    _______,
+     _______, KC_LBRC, _______, _______, _______, _______,                      _______, _______, KC_QUOT, _______, KC_SCLN,    _______,
+     _______, _______, _______, _______, _______, _______, _______,    _______, _______, _______, _______, _______, _______, S(A(KC_9)),
+                                _______, _______, _______, _______,    _______, _______, _______, _______
 ),
 
 /* NAVI
@@ -242,68 +248,112 @@ bool oled_task_user(void) {
 #endif // OLED_ENABLE
 
 // Sft overrides
-const key_override_t sft_brk_l = ko_make_with_layers(MOD_MASK_SHIFT, A(KC_8), A(KC_8), 1<<SFT_MAC);
-const key_override_t sft_brk_r = ko_make_with_layers(MOD_MASK_SHIFT, A(KC_9), A(KC_9), 1<<SFT_MAC);
-const key_override_t sft_del = ko_make_with_layers(MOD_MASK_SHIFT, KC_DEL, KC_DEL, 1<<SFT_MAC);
-const key_override_t sft_rti = ko_make_with_layers(MOD_MASK_SHIFT, C(KC_EQL), C(KC_EQL), 1<<SFT_MAC);
-const key_override_t sft_at = ko_make_with_layers(MOD_MASK_SHIFT, KC_BSLS, KC_BSLS, 1<<SFT_MAC);
-const key_override_t sft_plus = ko_make_with_layers(MOD_MASK_SHIFT, KC_MINS, KC_MINS, 1<<SFT_MAC);
-const key_override_t sft_nubs = ko_make_with_layers(MOD_MASK_SHIFT, KC_NUBS, KC_NUBS, 1<<SFT_MAC);
-
-// Alt overrides
-const key_override_t alt_ae = ko_make_with_layers(MOD_MASK_ALT, KC_QUOT, KC_QUOT, 1<<ALT_MAC);
-const key_override_t alt_oe = ko_make_with_layers(MOD_MASK_ALT, KC_SCLN, KC_SCLN, 1<<ALT_MAC);
-const key_override_t alt_aa = ko_make_with_layers(MOD_MASK_ALT, KC_LBRC, KC_LBRC, 1<<ALT_MAC);
-
-const key_override_t **key_overrides = (const key_override_t *[]){
-    &sft_brk_l,
-    &sft_brk_r,
-    &sft_del,
-    &sft_rti,
-    &sft_at,
-    &sft_plus,
-    &sft_nubs,
-    &alt_ae,
-    &alt_oe,
-    &alt_aa
-};
+//const key_override_t sft_brk_l = ko_make_with_layers(MOD_MASK_SHIFT, A(KC_8), A(KC_8), 1<<SFT_MAC);
+//const key_override_t sft_brk_r = ko_make_with_layers(MOD_MASK_SHIFT, A(KC_9), A(KC_9), 1<<SFT_MAC);
+//const key_override_t sft_del = ko_make_with_layers(MOD_MASK_SHIFT, KC_DEL, KC_DEL, 1<<SFT_MAC);
+//const key_override_t sft_rti = ko_make_with_layers(MOD_MASK_SHIFT, C(KC_EQL), C(KC_EQL), 1<<SFT_MAC);
+//const key_override_t sft_at = ko_make_with_layers(MOD_MASK_SHIFT, KC_BSLS, KC_BSLS, 1<<SFT_MAC);
+//const key_override_t sft_plus = ko_make_with_layers(MOD_MASK_SHIFT, KC_MINS, KC_MINS, 1<<SFT_MAC);
+//const key_override_t sft_nubs = ko_make_with_layers(MOD_MASK_SHIFT, KC_NUBS, KC_NUBS, 1<<SFT_MAC);
+//
+//// Alt overrides
+//const key_override_t alt_ae = ko_make_with_layers(MOD_MASK_ALT, KC_QUOT, KC_QUOT, 1<<ALT_MAC);
+//const key_override_t alt_oe = ko_make_with_layers(MOD_MASK_ALT, KC_SCLN, KC_SCLN, 1<<ALT_MAC);
+//const key_override_t alt_aa = ko_make_with_layers(MOD_MASK_ALT, KC_LBRC, KC_LBRC, 1<<ALT_MAC);
+//
+//const key_override_t **key_overrides = (const key_override_t *[]){
+//    &sft_brk_l,
+//    &sft_brk_r,
+//    &sft_del,
+//    &sft_rti,
+//    &sft_at,
+//    &sft_plus,
+//    &sft_nubs,
+//    &alt_ae,
+//    &alt_oe,
+//    &alt_aa
+//};
 
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
+  static uint16_t tap_timer;
+
   switch(keycode) {
-    case LT(0, KC_NO):
-    case LT(1, KC_NO):
-      if (record->tap.count && record->event.pressed) {
-        tap_code16(KC_SPC);
-      }
-      else if (record->event.pressed) {
-        os_variant_t detected_os = detected_host_os();
-        register_mods(MOD_BIT(KC_LSFT));
+    case SFT_SPC_TAP: {
+      os_variant_t detected_os = detected_host_os();
 
-        if (detected_os == OS_MACOS) {
-          layer_on(SFT_MAC);
-        }
-        else {
-          layer_on(SFT_WIN);
-        }
-      }
-      else {
-        os_variant_t detected_os = detected_host_os();
-        unregister_mods(MOD_BIT(KC_LSFT));
+      if (record->event.pressed) {
+          tap_timer = timer_read();
 
-        if (detected_os == OS_MACOS) {
-          layer_off(SFT_MAC);
-        }
-        else {
-          layer_off(SFT_WIN);
+          // Start both mod and layer on press
+          register_mods(MOD_BIT(KC_LSFT));
+          layer_on(detected_os == OS_MACOS ? SFT_MAC : SFT_WIN);
+      } else {
+          // Release both mod and layer on release
+          unregister_mods(MOD_BIT(KC_LSFT));
+          layer_off(detected_os == OS_MACOS ? SFT_MAC : SFT_WIN);
+
+          // If it's a tap, not a hold
+          if (timer_elapsed(tap_timer) < TAPPING_TERM) {
+              tap_code(KC_SPC);
+          }
+      }
+      // Stop default processing of SFT_SPC_TAP
+      return false;
+    }
+    case L_PAR_BRC: {
+      if (record->event.pressed) {
+        uint8_t mods = get_mods();  // Get currently held modifiers
+
+        if (mods & MOD_MASK_ALT) {
+            // Alt is held → send {
+            register_mods(MOD_BIT(KC_RALT) | MOD_BIT(KC_RCTL));
+            tap_code(KC_7);
+            unregister_mods(MOD_BIT(KC_RALT) | MOD_BIT(KC_RCTL));
+        } else if (mods & MOD_MASK_SHIFT) {
+            // Shift is held → send [
+            register_mods(MOD_BIT(KC_RALT) | MOD_BIT(KC_RCTL));
+            tap_code(KC_8);
+            unregister_mods(MOD_BIT(KC_RALT) | MOD_BIT(KC_RCTL));
+        } else {
+            // No modifier → send (
+            register_mods(MOD_BIT(KC_LSFT));
+            tap_code(KC_8);
+            unregister_mods(MOD_BIT(KC_LSFT));
         }
       }
-    break;
+      // Stop default processing of L_PAR_BRC
+      return false;
+    }
+    case R_PAR_BRC: {
+      if (record->event.pressed) {
+        uint8_t mods = get_mods();  // Get currently held modifiers
+
+        if (mods & MOD_MASK_ALT) {
+            // Alt is held → send {
+            register_mods(MOD_BIT(KC_RALT) | MOD_BIT(KC_RCTL));
+            tap_code(KC_0);
+            unregister_mods(MOD_BIT(KC_RALT) | MOD_BIT(KC_RCTL));
+        } else if (mods & MOD_MASK_SHIFT) {
+            // Shift is held → send [
+            register_mods(MOD_BIT(KC_RALT) | MOD_BIT(KC_RCTL));
+            tap_code(KC_9);
+            unregister_mods(MOD_BIT(KC_RALT) | MOD_BIT(KC_RCTL));
+        } else {
+            // No modifier → send (
+            register_mods(MOD_BIT(KC_LSFT));
+            tap_code(KC_9);
+            unregister_mods(MOD_BIT(KC_LSFT));
+        }
+      }
+      // Stop default processing of R_PAR_BRC
+      return false;
+    }
   }
-  if (record->event.pressed) {
-    #ifdef OLED_ENABLE
-      set_keylog(keycode, record);
-    #endif
-  }
+//  if (record->event.pressed) {
+//    #ifdef OLED_ENABLE
+//      set_keylog(keycode, record);
+//    #endif
+//  }
   return true;
 }
 
