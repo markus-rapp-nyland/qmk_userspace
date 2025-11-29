@@ -10,9 +10,8 @@ AUDIO_ENABLE = no           # Audio output
 RGBLIGHT_ENABLE = no        # Enable WS2812 RGB underlight.
 SWAP_HANDS_ENABLE = no      # Enable one-hand typing
 OLED_ENABLE = yes           # OLED display
-OS_DETECTION_ENABLE = yes
-DEFERRED_EXEC_ENABLE = yes
 KEY_OVERRIDE_ENABLE = yes
+CAPS_WORD_ENABLE = yes
 
 # If you want to change the display of OLED, you need to change here
 SRC +=  ./lib/rgb_state_reader.c \
