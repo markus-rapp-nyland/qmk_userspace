@@ -46,11 +46,11 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  * ,-----------------------------------------.                    ,-----------------------------------------.
  * |      |  F1  |  F2  |  F3  |  F4  |  F5  |                    |  F6  |  F7  |  F8  |  F9  |  F10 | PrScr|
  * |------+------+------+------+------+------|                    |------+------+------+------+------+------|
- * |      |      |      | PgUp |      | F11  |                    |  F12 |      |  Up  |      | |<<  | Break|
+ * |      |      |  &   | PgUp |  !   | F11  |                    |  F12 |   ?  |  Up  |   |  |      |      |
  * |------+------+------+------+------+------|                    |------+------+------+------+------+------|
- * | Del  |      | Home | PgDn | End  |      |-------.    ,-------|      | Left | Down | Rght |  ||  |WinBrk|
+ * | Del  |      | Home | PgDn | End  |      |-------.    ,-------|   /  | Left | Down | Rght |      |      |
  * |------+------+------+------+------+------| MAIN  |    | LOCK  |------+------+------+------+------+------|
- * | Ins  |      |      |LC+Ins|      |LS+Ins|-------|    |-------|      |      |      |      |  >>| |      |
+ * | Ins  |      |  "   |   $  |  {   |      |-------|    |-------|      |   ;  |   )  |   (  |      |      |
  * `-----------------------------------------'       /     \      '-----------------------------------------'
  *                   |      |      |      |         /       \          |      |      |      |
  *                   |      |      |      |        /         \         |      |      |      |
@@ -58,11 +58,11 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  */
 
 [NAVI] = LAYOUT(
-    _______,   KC_F1,   KC_F2,   KC_F3,        KC_F4,        KC_F5,                           KC_F6,   KC_F7,   KC_F8,   KC_F9,   KC_F10,  KC_PSCR,
-    _______, _______, _______, KC_PGUP,      _______,       KC_F11,                           KC_F12,  _______, KC_UP,   _______, KC_MPRV, KC_PAUS,
-     KC_DEL, _______, KC_HOME, KC_PGDN,       KC_END,      _______,                           _______, KC_LEFT, KC_DOWN, KC_RGHT, KC_MPLY, RGUI(KC_PAUS),
-     KC_INS, _______, _______, LCTL(KC_INS), _______, LSFT(KC_INS), _______,  _______, _______, _______, _______, _______, KC_MNXT, _______,
-                                    _______, _______, _______, KC_LSFT,       _______, _______, _______, _______
+    _______,   KC_F1,   KC_F2,   KC_F3,   KC_F4,   KC_F5,                         KC_F6,   KC_F7,   KC_F8,   KC_F9,  KC_F10, KC_PSCR,
+    _______, _______, NO_AMPR, KC_PGUP, NO_EXLM,  KC_F11,                        KC_F12, NO_QUES,   KC_UP, NO_PIPE, _______, _______,
+     KC_DEL, _______, KC_HOME, KC_PGDN,  KC_END, _______,                       _______, KC_LEFT, KC_DOWN, KC_RGHT, _______, _______,
+     KC_INS, _______, NO_DQUO,  NO_DLR, NO_LCBR, _______, _______,     _______, _______, NO_SCLN, NO_RPRN, NO_LPRN, _______, _______,
+                       _______, _______, _______, SFT_T(KC_BSPC),       _______, _______, _______, _______
 ),
 };
 
@@ -122,7 +122,8 @@ const key_override_t alt_o_oe = ko_make_with_layers(MOD_MASK_ALT, KC_O, NO_OE, 1
 const key_override_t alt_a_aa = ko_make_with_layers(MOD_MASK_ALT, KC_A, NO_AA, 1<<BASE);
 const key_override_t alt_lprn_lcbr = ko_make_with_layers(MOD_MASK_ALT, NO_LPRN, NO_LCBR, 1<<BASE);
 const key_override_t alt_rprn_rcbr = ko_make_with_layers(MOD_MASK_ALT, NO_RPRN, NO_RCBR, 1<<BASE);
-const key_override_t alt_del_word   = ko_make_with_layers(MOD_MASK_ALT, KC_BSPC, C(KC_BSPC), 1<<BASE);
+
+const key_override_t alt_del_word   = ko_make_basic(MOD_MASK_ALT, SFT_T(KC_BSPC), C(KC_BSPC));
 
 
 const key_override_t **key_overrides = (const key_override_t *[]){
