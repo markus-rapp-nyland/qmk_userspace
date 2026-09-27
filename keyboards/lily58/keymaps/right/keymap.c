@@ -1,37 +1,10 @@
 #include QMK_KEYBOARD_H
 #include "keymap_norwegian.h"
+#include "../lib/sm_td.h"
 
 // Fix weird names from keymap_norwegian
 #define NO_OE NO_OSTR   // Ø
 #define NO_AA NO_ARNG   // Å
-
-// Left-hand HRM
-#define HOME_A LT(0,KC_A) // "layer-tap" for gui with a and å support
-#define HOME_R LALT_T(KC_R)
-#define HOME_S LSFT_T(KC_S)
-#define HOME_T LCTL_T(KC_T)
-
-// Right-hand HRM
-#define HOME_N RCTL_T(KC_N)
-#define HOME_E LT(0,KC_E) // "layer-tap" for shift with e and æ support
-#define HOME_I RALT_T(KC_I)
-#define HOME_O LT(0,KC_O) // "layer-tap" for gui with o and ø support
-
-// NAVI left-hand HRM
-#define NAVI_R LALT_T(KC_HOME)
-#define NAVI_S LSFT_T(KC_PGDN)
-#define NAVI_T LCTL_T(KC_END)
-
-// NAVI right-hand HRM
-#define NAVI_N RCTL_T(KC_LEFT)
-#define NAVI_E RSFT_T(KC_DOWN)
-#define NAVI_I LALT_T(KC_RGHT)
-
-// BASE thumb keys
-#define L_CTL_ENT LCTL_T(KC_ENT)
-#define R_CTL_ENT RCTL_T(KC_ENT)
-#define L_ALT_BSPC LALT_T(KC_BSPC)
-#define R_ALT_BSPC RALT_T(KC_BSPC)
 
 enum layer_number {
   BASE = 0,
@@ -61,11 +34,11 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  */
 
 [BASE] = LAYOUT(
-     KC_ESC,   KC_1,   KC_2,   KC_3,   KC_4, KC_5,                 KC_6,   KC_7,    KC_8,   KC_9,    KC_0,  KC_ESC,
-     KC_TAB,   KC_Q,   KC_W,   KC_F,   KC_P, KC_B,                 KC_J,   KC_L,    KC_U,   KC_Y,  NO_EQL,  KC_TAB,
-    NO_DQUO, HOME_A, HOME_R, HOME_S, HOME_T, KC_G,                 KC_M, HOME_N,  HOME_E, HOME_I,  HOME_O, NO_QUOT,
-    NO_LPRN,   KC_Z,   KC_X,   KC_C,   KC_D, KC_V, TICK,    TILDE, KC_K,   KC_H, KC_COMM, KC_DOT, KC_SLSH, NO_RPRN,
-      KC_LGUI, L_CTL_ENT, L_ALT_BSPC, LT(NAVI, KC_SPC),      LT(NAVI, KC_SPC), R_ALT_BSPC, R_CTL_ENT, KC_RGUI
+     KC_ESC, KC_1, KC_2, KC_3, KC_4, KC_5,                 KC_6, KC_7, KC_8,    KC_9,   KC_0,    KC_ESC,
+     KC_TAB, KC_Q, KC_W, KC_F, KC_P, KC_B,                 KC_J, KC_L, KC_U,    KC_Y,   NO_EQL,  KC_TAB,
+    NO_DQUO, KC_A, KC_R, KC_S, KC_T, KC_G,                 KC_M, KC_N, KC_E,    KC_I,   KC_O,    NO_QUOT,
+    NO_LPRN, KC_Z, KC_X, KC_C, KC_D, KC_V, TICK,    TILDE, KC_K, KC_H, KC_COMM, KC_DOT, KC_SLSH, NO_RPRN,
+              KC_LGUI, KC_ENT, KC_DEL, KC_SPC,        KC_SPC, KC_BSPC, KC_ENT, KC_RGUI
 ),
 
 /* NAVI
@@ -88,7 +61,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     _______, NO_LABK, NO_AMPR, KC_PGUP, NO_EXLM,  KC_F11,                        KC_F12, NO_QUES,   KC_UP, NO_PIPE, NO_RABK, _______,
     _______, _______, KC_HOME, KC_PGDN,  KC_END, NO_BSLS,                       NO_SLSH, KC_LEFT, KC_DOWN, KC_RGHT, _______, _______,
     _______, _______, NO_DQUO,  NO_DLR, NO_LCBR, _______, _______,     _______, _______, NO_SCLN, NO_RPRN, NO_LPRN, _______, _______,
-          LGUI_T(KC_ESC), LCTL_T(KC_TAB), LALT_T(KC_DEL), KC_SPC,       KC_SPC, LALT_T(KC_DEL), RCTL_T(KC_TAB), RGUI_T(KC_ESC)
+                                KC_ESC, KC_TAB, _______, KC_SPC,         KC_SPC, _______, KC_TAB, KC_ESC
 ),
 };
 
@@ -167,13 +140,126 @@ const key_override_t **key_overrides = (const key_override_t *[]){
   NULL
 };
 
+smtd_resolution on_smtd_action(uint16_t keycode, smtd_action action, uint8_t tap_count) {
+    switch (keycode) {
+        // SMTD_MT with support for å
+        case KC_A: {
+            switch (action) {
+                case SMTD_ACTION_TOUCH:
+                    break;
+                case SMTD_ACTION_TAP:
+                    uint8_t mods = get_mods();
+                    if (is_caps_word_on()) {
+                      add_weak_mods(MOD_BIT(KC_LSFT));  // Apply shift to next key.
+                    }
+
+                    if (mods & MOD_MASK_ALT) {
+                       del_mods(MOD_MASK_ALT);
+                       tap_code16(NO_AA);
+                       set_mods(mods);
+                    }
+                    else {
+                      tap_code16(KC_A);
+                    }
+                    break;
+                case SMTD_ACTION_HOLD:
+                    register_mods(MOD_LGUI);
+                    break;
+                case SMTD_ACTION_RELEASE:
+                    unregister_mods(MOD_LGUI);
+                    break;
+            }
+            return SMTD_RESOLUTION_DETERMINED;
+        }
+        // SMTD_MT with support for æ
+        case KC_E: {
+            switch (action) {
+                case SMTD_ACTION_TOUCH:
+                    break;
+                case SMTD_ACTION_TAP:
+                    uint8_t mods = get_mods();
+                    if (is_caps_word_on()) {
+                      add_weak_mods(MOD_BIT(KC_LSFT));  // Apply shift to next key.
+                    }
+
+                    if (mods & MOD_MASK_ALT) {
+                       del_mods(MOD_MASK_ALT);
+                       tap_code16(NO_AE);
+                       set_mods(mods);
+                    }
+                    else {
+                      tap_code16(KC_E);
+                    }
+                    break;
+                case SMTD_ACTION_HOLD:
+                    register_code(KC_RSFT);
+                    break;
+                case SMTD_ACTION_RELEASE:
+                    unregister_code(KC_RSFT);
+                    break;
+            }
+            return SMTD_RESOLUTION_DETERMINED;
+        }
+
+        // SMTD_MT with support for ø
+        case KC_O: {
+            switch (action) {
+                case SMTD_ACTION_TOUCH:
+                    break;
+                case SMTD_ACTION_TAP:
+                    uint8_t mods = get_mods();
+                    if (is_caps_word_on()) {
+                      add_weak_mods(MOD_BIT(KC_LSFT));  // Apply shift to next key.
+                    }
+
+                    if (mods & MOD_MASK_ALT) {
+                       del_mods(MOD_MASK_ALT);
+                       tap_code16(NO_OE);
+                       set_mods(mods);
+                    }
+                    else {
+                      tap_code16(KC_O);
+                    }
+                    break;
+                case SMTD_ACTION_HOLD:
+                    register_code(KC_LGUI);
+                    break;
+                case SMTD_ACTION_RELEASE:
+                    unregister_code(KC_LGUI);
+                    break;
+            }
+            return SMTD_RESOLUTION_DETERMINED;
+        }
+        SMTD_MT(KC_R, KC_LALT)
+        SMTD_MT(KC_S, KC_LSFT)
+        SMTD_MT(KC_T, KC_LCTL)
+
+        SMTD_MT(KC_N, KC_RCTL)
+        SMTD_MT(KC_I, KC_RALT)
+
+        SMTD_LT(KC_SPC, NAVI)
+        SMTD_MT(KC_TAB, KC_LCTL)
+        SMTD_MT(KC_ESC, KC_LGUI)
+
+        SMTD_MT(KC_ENT, KC_LCTL)
+        SMTD_MT(KC_DEL, KC_LALT)
+        SMTD_MT(KC_BSPC, KC_RALT)
+    }
+
+    return SMTD_RESOLUTION_UNHANDLED;
+}
+
 
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
-  static uint16_t tap_timer;
-
   if (get_mods() == MOD_MASK_ALT) {
     caps_word_on();
   }
+
+  if (!process_smtd(keycode, record)) {
+      return false;
+  }
+
+  static uint16_t tap_timer;
 
   switch(keycode) {
     case TICK: {
@@ -222,81 +308,6 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
       // Stop default processing
       return false;
     }
-    case LT(0,KC_A): {
-      uint8_t mods = get_mods();  // Get currently held modifiers
-
-      if (record->tap.count && record->event.pressed) { // tap
-        if (is_caps_word_on()) {
-          add_weak_mods(MOD_BIT(KC_LSFT));  // Apply shift to next key.
-        }
-
-        if (mods & MOD_MASK_ALT) {
-           del_mods(MOD_MASK_ALT);
-           tap_code16(NO_AA);
-           set_mods(mods);
-        }
-        else {
-          tap_code16(KC_A);
-        }
-      } else if (record->event.pressed) { // hold
-          register_code(KC_LGUI);
-      }
-      else { // release
-        unregister_code(KC_LGUI);
-      }
-      // Stop default processing
-      return false;
-    }
-    case LT(0,KC_E): {
-      uint8_t mods = get_mods();  // Get currently held modifiers
-
-      if (record->tap.count && record->event.pressed) { // tap
-        if (is_caps_word_on()) {
-          add_weak_mods(MOD_BIT(KC_LSFT));  // Apply shift to next key.
-        }
-
-        if (mods & MOD_MASK_ALT) {
-           unregister_mods(MOD_MASK_ALT);
-           tap_code16(NO_AE);
-           set_mods(mods);
-        }
-        else {
-          tap_code16(KC_E);
-        }
-      } else if (record->event.pressed) { // hold
-          register_code(KC_RSFT);
-      }
-      else { // release
-        unregister_code(KC_RSFT);
-      }
-      // Stop default processing
-      return false;
-    }
-    case LT(0,KC_O): {
-      uint8_t mods = get_mods();  // Get currently held modifiers
-
-      if (record->tap.count && record->event.pressed) { // tap
-        if (is_caps_word_on()) {
-          add_weak_mods(MOD_BIT(KC_LSFT));  // Apply shift to next key.
-        }
-
-        if (mods & MOD_MASK_ALT) {
-           unregister_mods(MOD_MASK_ALT);
-           tap_code16(NO_OE);
-           set_mods(mods);
-        }
-        else {
-          tap_code16(KC_O);
-        }
-      } else if (record->event.pressed) { // hold
-          register_code(KC_LGUI);
-      }
-      else { // release
-        unregister_code(KC_LGUI);
-      }
-      // Stop default processing
-      return false;
-    }
   }
   return true;
 };
@@ -305,15 +316,14 @@ bool caps_word_press_user(uint16_t keycode) {
     switch (keycode) {
         // Keycodes that continue Caps Word, with shift applied.
         case KC_A ... KC_Z:
-        case LT(0,KC_A):
-        case LT(0,KC_E):
-        case LT(0,KC_O):
         case NO_MINS:
             add_weak_mods(MOD_BIT(KC_LSFT));  // Apply shift to next key.
             return true;
 
         // Keycodes that continue Caps Word, without shifting.
         case KC_1 ... KC_0:
+        case KC_LALT:
+        case KC_RALT:
         case KC_BSPC:
         case KC_DEL:
         case KC_UNDS:

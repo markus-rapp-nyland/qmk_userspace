@@ -12,12 +12,14 @@ SWAP_HANDS_ENABLE = no      # Enable one-hand typing
 OLED_ENABLE = yes           # OLED display
 KEY_OVERRIDE_ENABLE = yes
 CAPS_WORD_ENABLE = yes
+DEFERRED_EXEC_ENABLE = yes
 
 # If you want to change the display of OLED, you need to change here
 SRC +=  ./lib/rgb_state_reader.c \
         ./lib/layer_state_reader.c \
         ./lib/logo_reader.c \
         ./lib/keylogger.c \
+        ../lib/sm_td.c
         # ./lib/mode_icon_reader.c \
         # ./lib/host_led_state_reader.c \
         # ./lib/timelogger.c \
