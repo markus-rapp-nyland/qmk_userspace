@@ -31,111 +31,21 @@ enum custom_keycodes {
 
 smtd_resolution on_smtd_action(uint16_t keycode, smtd_action action, uint8_t tap_count) {
     switch (keycode) {
-        // SMTD_MT with support for å
-        case KC_A: {
-            switch (action) {
-                case SMTD_ACTION_TOUCH:
-                    break;
-                case SMTD_ACTION_TAP:
-                    uint8_t mods = get_mods();
-                    if (is_caps_word_on()) {
-                      add_weak_mods(MOD_BIT(KC_LSFT));  // Apply shift to next key.
-                    }
-
-                    if (mods & MOD_MASK_ALT) {
-                       unregister_mods(MOD_MASK_ALT);
-                       tap_code16(NO_AA);
-                       set_mods(mods);
-                    }
-                    else {
-                      tap_code16(KC_A);
-                    }
-                    break;
-                case SMTD_ACTION_HOLD:
-                    register_mods(MOD_LCTL);
-                    break;
-                case SMTD_ACTION_RELEASE:
-                    unregister_mods(MOD_LCTL);
-                    break;
-            }
-            return SMTD_RESOLUTION_DETERMINED;
-        }
-        // SMTD_MT with support for æ
-        case KC_E: {
-            switch (action) {
-                case SMTD_ACTION_TOUCH:
-                    break;
-                case SMTD_ACTION_TAP:
-                    uint8_t mods = get_mods();
-                    if (is_caps_word_on()) {
-                      add_weak_mods(MOD_BIT(KC_LSFT));  // Apply shift to next key.
-                    }
-
-                    if (mods & MOD_MASK_ALT) {
-                       unregister_mods(MOD_MASK_ALT);
-                       tap_code16(NO_AE);
-                       set_mods(mods);
-                    }
-                    else {
-                      tap_code16(KC_E);
-                    }
-                    break;
-                case SMTD_ACTION_HOLD:
-                    register_code(KC_RSFT);
-                    break;
-                case SMTD_ACTION_RELEASE:
-                    unregister_code(KC_RSFT);
-                    break;
-            }
-            return SMTD_RESOLUTION_DETERMINED;
-        }
-
-        // SMTD_MT with support for ø
-        case KC_O: {
-            switch (action) {
-                case SMTD_ACTION_TOUCH:
-                    break;
-                case SMTD_ACTION_TAP:
-                    uint8_t mods = get_mods();
-                    if (is_caps_word_on()) {
-                      add_weak_mods(MOD_BIT(KC_LSFT));  // Apply shift to next key.
-                    }
-
-                    if (mods & MOD_MASK_ALT) {
-                       unregister_mods(MOD_MASK_ALT);
-                       tap_code16(NO_OE);
-                       set_mods(mods);
-                    }
-                    else {
-                      tap_code16(KC_O);
-                    }
-                    break;
-                case SMTD_ACTION_HOLD:
-                    register_code(KC_LCTL);
-                    break;
-                case SMTD_ACTION_RELEASE:
-                    unregister_code(KC_LCTL);
-                    break;
-            }
-            return SMTD_RESOLUTION_DETERMINED;
-        }
-
+        SMTD_MT(KC_A, KC_LCTL)
         SMTD_MT(KC_R, KC_LALT)
         SMTD_MT(KC_HOME, KC_LALT)
-
         SMTD_MT(KC_S, KC_LSFT)
         SMTD_MT(KC_PGDN, KC_LSFT)
-
         SMTD_MT(KC_T, KC_LGUI)
         SMTD_MT(KC_END, KC_LGUI)
 
         SMTD_MT(KC_N, KC_RGUI)
         SMTD_MT(KC_LEFT, KC_RGUI)
-
+        SMTD_MT(KC_E, KC_RSFT)
         SMTD_MT(KC_DOWN, KC_RSFT)
-
         SMTD_MT(KC_I, KC_RALT)
         SMTD_MT(KC_RGHT, KC_RALT)
+        SMTD_MT(KC_O, KC_RCTL)
 
         SMTD_LT(KC_SPC, NAVI)
 
@@ -253,6 +163,9 @@ const key_override_t sft_rprn_rbrc  = ko_make_with_layers(MOD_MASK_SHIFT, NO_RPR
 
 const key_override_t alt_lprn_lcbr = ko_make_with_layers(MOD_MASK_ALT, NO_LPRN, NO_LCBR, 1<<BASE);
 const key_override_t alt_rprn_rcbr = ko_make_with_layers(MOD_MASK_ALT, NO_RPRN, NO_RCBR, 1<<BASE);
+const key_override_t alt_e_ae = ko_make_with_layers(MOD_MASK_ALT, KC_E, NO_AE, 1<<BASE);
+const key_override_t alt_o_oe = ko_make_with_layers(MOD_MASK_ALT, KC_O, NO_OE, 1<<BASE);
+const key_override_t alt_a_aa = ko_make_with_layers(MOD_MASK_ALT, KC_A, NO_AA, 1<<BASE);
 
 const key_override_t **key_overrides = (const key_override_t *[]){
   &sft_4_dlr,
@@ -268,6 +181,9 @@ const key_override_t **key_overrides = (const key_override_t *[]){
   &sft_rprn_rbrc,
   &alt_lprn_lcbr,
   &alt_rprn_rcbr,
+  &alt_e_ae,
+  &alt_o_oe,
+  &alt_a_aa,
   NULL
 };
 
