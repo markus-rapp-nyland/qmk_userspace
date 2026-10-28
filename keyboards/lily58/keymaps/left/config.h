@@ -21,7 +21,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #pragma once
 
 #define MASTER_LEFT
-#define TAPPING_TERM 250
+#define TAPPING_TERM 200
 #define MAX_DEFERRED_EXECUTORS 10
 
 #undef RGBLIGHT_LED_COUNT

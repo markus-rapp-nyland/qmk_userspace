@@ -61,7 +61,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     _______, NO_LABK, NO_AMPR, KC_PGUP, NO_EXLM,  KC_F11,                        KC_F12, NO_QUES,   KC_UP, NO_PIPE, NO_RABK, _______,
     _______, _______, KC_HOME, KC_PGDN,  KC_END, NO_BSLS,                       NO_SLSH, KC_LEFT, KC_DOWN, KC_RGHT, _______, _______,
     _______, _______, NO_DQUO,  NO_DLR, NO_LCBR, _______, _______,     _______, _______, NO_SCLN, NO_RPRN, NO_LPRN, _______, _______,
-                                KC_ESC, KC_TAB, _______, KC_SPC,         KC_SPC, _______, KC_TAB, KC_ESC
+                                KC_ESC, KC_TAB, KC_LALT, KC_SPC,         KC_SPC, KC_RALT, KC_TAB, KC_ESC
 ),
 };
 
